@@ -1,5 +1,5 @@
 include:
-  - board: mriya_left
-  - board: mriya_right
-  - board: nice_nano_v2
+  - board: mriya_left//zmk
+  - board: mriya_right//zmk
+  - board: nice_nano//zmk
     shield: settings_reset

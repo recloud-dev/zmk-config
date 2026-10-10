@@ -1,0 +1,13 @@
+file_format: "1"
+id: mriya
+name: Mriya
+type: board
+arch: arm
+features:
+  - keys
+outputs:
+  - usb
+  - ble
+siblings:
+  - mriya_left//zmk
+  - mriya_right//zmk
