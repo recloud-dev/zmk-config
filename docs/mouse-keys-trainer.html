@@ -320,14 +320,45 @@
       height: 3px;
       background: rgba(62, 207, 142, 0.85);
       transform-origin: left center;
-      scale: 1 1;
       z-index: 21;
       display: none;
+      transition: background 0.15s;
     }
+
+    #timer-bar.danger { background: rgba(226, 109, 109, 0.9); }
+    #timer-bar.warn { background: rgba(230, 179, 90, 0.9); }
+
+    #death-flash {
+      position: fixed;
+      inset: 0;
+      z-index: 28;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(226, 109, 109, 0.35), rgba(8, 12, 10, 0.75));
+      opacity: 0;
+      transition: opacity 0.12s;
+    }
+
+    #death-flash.show { opacity: 1; }
+
+    .target.survive {
+      box-shadow:
+        0 0 0 2px rgba(226, 109, 109, 0.7),
+        0 0 28px rgba(226, 109, 109, 0.28);
+      background:
+        radial-gradient(circle at 35% 30%, #ffe0e0, #e26d6d 42%, rgba(226, 109, 109, 0.25) 70%, transparent 72%),
+        radial-gradient(circle, rgba(226, 109, 109, 0.35), transparent 65%);
+    }
+
+    .target.survive::after {
+      box-shadow: inset 0 0 0 1.5px rgba(255, 220, 220, 0.75);
+    }
+
+    .panel h1.dead { color: var(--miss); }
   </style>
 </head>
 <body>
   <div id="timer-bar"></div>
+  <div id="death-flash"></div>
 
   <div id="hud">
     <div class="brand">
@@ -346,6 +377,7 @@
         <option value="precision">Precision</option>
         <option value="sprint">Sprint 60s</option>
         <option value="ladder">Ladder</option>
+        <option value="survive">Survive</option>
       </select>
       <button type="button" id="btn-path" title="Показать вектор до цели">path</button>
       <button type="button" id="btn-pause">pause</button>
@@ -381,6 +413,7 @@
           <option value="precision">Precision — мелкие цели</option>
           <option value="sprint">Sprint — 60 секунд</option>
           <option value="ladder">Ladder — цели мельчают</option>
+          <option value="survive">Survive — промах/таймаут = смерть</option>
         </select>
       </div>
     </div>
@@ -394,6 +427,7 @@
     const toastEl = document.getElementById("toast");
     const ghostPath = document.getElementById("ghost-path");
     const timerBar = document.getElementById("timer-bar");
+    const deathFlash = document.getElementById("death-flash");
     const modeSelect = document.getElementById("mode");
     const modeStart = document.getElementById("mode-start");
     const modeLabel = document.getElementById("mode-label");
@@ -410,7 +444,10 @@
       precision: "Precision",
       sprint: "Sprint 60s",
       ladder: "Ladder",
+      survive: "Survive",
     };
+
+    const SURVIVE_BEST_KEY = "mouse-keys-survive-best";
 
     const state = {
       running: false,
@@ -428,6 +465,9 @@
       ladderStep: 0,
       sprintEndsAt: 0,
       sprintRaf: 0,
+      surviveDeadline: 0,
+      surviveBudgetMs: 0,
+      deathReason: "",
     };
 
     function pad() {
@@ -448,17 +488,25 @@
       return Math.hypot(dx, dy);
     }
 
-    function targetRadius(mode, ladderStep) {
+    function targetRadius(mode, ladderStep, hits) {
       if (mode === "precision") return rand(10, 16);
       if (mode === "ladder") return Math.max(8, 34 - ladderStep * 2.2);
+      if (mode === "survive") return Math.max(12, 32 - hits * 0.7);
       return rand(18, 36);
+    }
+
+    function surviveBudgetMs(hits, distancePx) {
+      // Base window + travel allowance; tightens with score.
+      const base = Math.max(1400, 3200 - hits * 90);
+      const travel = Math.min(1800, distancePx * 1.1);
+      return base + travel;
     }
 
     function placeTarget() {
       if (state.target) state.target.remove();
 
       const p = pad();
-      const r = targetRadius(state.mode, state.ladderStep);
+      const r = targetRadius(state.mode, state.ladderStep, state.hits);
       const w = window.innerWidth;
       const h = window.innerHeight;
       const minX = p.side + r;
@@ -486,7 +534,10 @@
       }
 
       const el = document.createElement("div");
-      el.className = "target" + (r <= 16 ? " precision" : "");
+      const cls = ["target"];
+      if (r <= 16) cls.push("precision");
+      if (state.mode === "survive") cls.push("survive");
+      el.className = cls.join(" ");
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
       el.style.width = `${r * 2}px`;
@@ -498,6 +549,17 @@
       state.spawnAt = performance.now();
       updateHint(origin, state.targetPos);
       drawPath(origin, state.targetPos);
+
+      if (state.mode === "survive") {
+        const d = dist(origin, state.targetPos);
+        state.surviveBudgetMs = surviveBudgetMs(state.hits, d);
+        state.surviveDeadline = performance.now() + state.surviveBudgetMs;
+        timerBar.style.display = "block";
+        timerBar.className = "";
+        timerBar.style.transform = "scaleX(1)";
+        cancelAnimationFrame(state.sprintRaf);
+        state.sprintRaf = requestAnimationFrame(tickSurvive);
+      }
     }
 
     function gearAdvice(distancePx, radius) {
@@ -593,27 +655,81 @@
       }
     }
 
-    function endSprint() {
+    function showOverlayEnd(title, body, dead) {
       state.running = false;
       cancelAnimationFrame(state.sprintRaf);
       timerBar.style.display = "none";
+      timerBar.className = "";
       overlay.classList.remove("hidden");
       const panel = overlay.querySelector(".panel");
-      panel.querySelector("h1").textContent = "Sprint окончен";
-      panel.querySelector("p").textContent =
-        `Попаданий: ${state.hits} · точность: ${els.acc.textContent} · avg: ${els.avg.textContent} ms · лучший стрик: ${state.bestStreak}`;
+      const h1 = panel.querySelector("h1");
+      h1.textContent = title;
+      h1.classList.toggle("dead", !!dead);
+      panel.querySelector("p").textContent = body;
       panel.querySelector("ul").style.display = "none";
     }
 
+    function endSprint() {
+      showOverlayEnd(
+        "Sprint окончен",
+        `Попаданий: ${state.hits} · точность: ${els.acc.textContent} · avg: ${els.avg.textContent} ms · лучший стрик: ${state.bestStreak}`,
+        false
+      );
+    }
+
+    function die(reason) {
+      if (!state.running) return;
+      state.deathReason = reason;
+      cancelAnimationFrame(state.sprintRaf);
+      deathFlash.classList.add("show");
+      setTimeout(() => deathFlash.classList.remove("show"), 380);
+
+      let best = 0;
+      try {
+        best = Number(localStorage.getItem(SURVIVE_BEST_KEY) || 0);
+      } catch (_) {}
+      if (state.hits > best) {
+        best = state.hits;
+        try {
+          localStorage.setItem(SURVIVE_BEST_KEY, String(best));
+        } catch (_) {}
+      }
+
+      if (state.target) {
+        state.target.style.opacity = "0.25";
+      }
+
+      toast(reason === "timeout" ? "время" : "miss → dead", false);
+      showOverlayEnd(
+        "Ты умер",
+        `${reason === "timeout" ? "Время вышло" : "Промах"}. Счёт: ${state.hits} · avg: ${els.avg.textContent} ms · рекорд: ${best}`,
+        true
+      );
+    }
+
     function tickSprint() {
-      if (!state.running || state.mode !== "sprint") return;
+      if (!state.running || state.mode !== "sprint" || state.paused) return;
       const left = state.sprintEndsAt - performance.now();
       if (left <= 0) {
         endSprint();
         return;
       }
+      timerBar.className = left < 10000 ? "warn" : "";
       timerBar.style.transform = `scaleX(${left / 60000})`;
       state.sprintRaf = requestAnimationFrame(tickSprint);
+    }
+
+    function tickSurvive() {
+      if (!state.running || state.mode !== "survive" || state.paused) return;
+      const left = state.surviveDeadline - performance.now();
+      if (left <= 0) {
+        die("timeout");
+        return;
+      }
+      const ratio = left / state.surviveBudgetMs;
+      timerBar.className = ratio < 0.25 ? "danger" : ratio < 0.5 ? "warn" : "";
+      timerBar.style.transform = `scaleX(${Math.max(0, ratio)})`;
+      state.sprintRaf = requestAnimationFrame(tickSurvive);
     }
 
     function onFieldClick(e) {
@@ -638,6 +754,9 @@
         ripple(t.x, t.y, true);
         toast(`${Math.round(ms)} ms`, true);
         placeTarget();
+      } else if (state.mode === "survive") {
+        ripple(x, y, false);
+        die("miss");
       } else {
         state.streak = 0;
         ripple(x, y, false);
@@ -659,25 +778,30 @@
       state.bestStreak = 0;
       state.times = [];
       state.ladderStep = 0;
+      state.deathReason = "";
       state.lastHit = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
       modeSelect.value = mode;
       modeStart.value = mode;
       modeLabel.textContent = MODE_NAMES[mode];
       overlay.classList.add("hidden");
       overlay.querySelector("ul").style.display = "";
-      overlay.querySelector("h1").textContent = "Тренировка mouse keys";
+      const h1 = overlay.querySelector("h1");
+      h1.textContent = "Тренировка mouse keys";
+      h1.classList.remove("dead");
       document.getElementById("btn-pause").textContent = "pause";
       hintText.parentElement.style.opacity = "1";
+      deathFlash.classList.remove("show");
+      cancelAnimationFrame(state.sprintRaf);
 
       if (mode === "sprint") {
         timerBar.style.display = "block";
+        timerBar.className = "";
         timerBar.style.transform = "scaleX(1)";
         state.sprintEndsAt = performance.now() + 60000;
-        cancelAnimationFrame(state.sprintRaf);
         state.sprintRaf = requestAnimationFrame(tickSprint);
-      } else {
+      } else if (mode !== "survive") {
         timerBar.style.display = "none";
-        cancelAnimationFrame(state.sprintRaf);
+        timerBar.className = "";
       }
 
       renderStats();
@@ -696,6 +820,14 @@
         } else {
           state.sprintEndsAt = performance.now() + (state._sprintLeft || 0);
           state.sprintRaf = requestAnimationFrame(tickSprint);
+        }
+      } else if (state.mode === "survive") {
+        if (state.paused) {
+          state._surviveLeft = state.surviveDeadline - performance.now();
+          cancelAnimationFrame(state.sprintRaf);
+        } else {
+          state.surviveDeadline = performance.now() + (state._surviveLeft || 0);
+          state.sprintRaf = requestAnimationFrame(tickSurvive);
         }
       }
     }
