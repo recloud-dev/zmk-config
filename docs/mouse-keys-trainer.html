@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mouse Keys Trainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg0: #0e1412;
+      --bg1: #15201c;
+      --ink: #e8f0eb;
+      --muted: #8aa396;
+      --line: rgba(232, 240, 235, 0.12);
+      --good: #3ecf8e;
+      --warn: #e6b35a;
+      --miss: #e26d6d;
+      --target: #7ec8ff;
+      --target-core: #d7f0ff;
+      --gear-d: #ff8b6a;
+      --gear-f: #f0c35a;
+      --gear-base: #8fd4a8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: "DM Sans", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 700px at 15% -10%, rgba(62, 207, 142, 0.12), transparent 55%),
+        radial-gradient(900px 600px at 90% 10%, rgba(126, 200, 255, 0.10), transparent 50%),
+        linear-gradient(165deg, var(--bg0), var(--bg1) 55%, #101816);
+    }
+
+    body { user-select: none; }
+
+    #hud {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem 1.25rem;
+      pointer-events: none;
+    }
+
+    #hud > * { pointer-events: auto; }
+
+    .brand {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .brand strong {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 1.05rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .stats {
+      display: flex;
+      gap: 1.25rem;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.85rem;
+    }
+
+    .stat { text-align: center; min-width: 4.5rem; }
+    .stat b { display: block; font-size: 1.35rem; font-weight: 600; line-height: 1.1; }
+    .stat span { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.04em; }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      justify-content: flex-end;
+    }
+
+    button, select {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(14, 20, 18, 0.55);
+      color: var(--ink);
+      font: 500 0.8rem/1 "DM Sans", sans-serif;
+      padding: 0.55rem 0.75rem;
+      border-radius: 0.45rem;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.15s, background 0.15s, transform 0.12s;
+    }
+
+    button:hover, select:hover { border-color: rgba(232, 240, 235, 0.28); }
+    button:active { transform: translateY(1px); }
+    button.primary {
+      background: rgba(62, 207, 142, 0.18);
+      border-color: rgba(62, 207, 142, 0.45);
+    }
+    button.active {
+      background: rgba(126, 200, 255, 0.16);
+      border-color: rgba(126, 200, 255, 0.45);
+    }
+
+    #field {
+      position: fixed;
+      inset: 0;
+      cursor: crosshair;
+    }
+
+    #hint {
+      position: fixed;
+      left: 50%;
+      bottom: 1.25rem;
+      transform: translateX(-50%);
+      z-index: 20;
+      min-width: min(36rem, calc(100vw - 2rem));
+      padding: 0.85rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: 0.65rem;
+      background: rgba(14, 20, 18, 0.72);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      transition: opacity 0.25s, border-color 0.2s;
+    }
+
+    #hint .gear {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin: 0 0.15rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 0.35rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    #hint .gear.d { background: rgba(255, 139, 106, 0.18); color: var(--gear-d); }
+    #hint .gear.f { background: rgba(240, 195, 90, 0.18); color: var(--gear-f); }
+    #hint .gear.base { background: rgba(143, 212, 168, 0.16); color: var(--gear-base); }
+
+    #hint p {
+      margin-top: 0.35rem;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .target {
+      position: absolute;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0.6);
+      background:
+        radial-gradient(circle at 35% 30%, var(--target-core), var(--target) 42%, rgba(126, 200, 255, 0.25) 70%, transparent 72%),
+        radial-gradient(circle, rgba(126, 200, 255, 0.35), transparent 65%);
+      box-shadow:
+        0 0 0 2px rgba(126, 200, 255, 0.55),
+        0 0 28px rgba(126, 200, 255, 0.25);
+      animation: pop-in 180ms cubic-bezier(0.2, 0.9, 0.2, 1.2) forwards;
+      z-index: 5;
+    }
+
+    .target::after {
+      content: "";
+      position: absolute;
+      inset: 38%;
+      border-radius: 50%;
+      background: rgba(14, 20, 18, 0.55);
+      box-shadow: inset 0 0 0 1.5px rgba(215, 240, 255, 0.7);
+    }
+
+    .target.precision {
+      background:
+        radial-gradient(circle at 35% 30%, #fff, #9fd6ff 40%, rgba(126, 200, 255, 0.2) 68%, transparent 70%);
+      box-shadow:
+        0 0 0 2px rgba(126, 200, 255, 0.8),
+        0 0 22px rgba(126, 200, 255, 0.35);
+    }
+
+    @keyframes pop-in {
+      to { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      border: 2px solid var(--good);
+      transform: translate(-50%, -50%) scale(0.4);
+      opacity: 0.9;
+      animation: ripple 420ms ease-out forwards;
+      z-index: 6;
+    }
+
+    .ripple.miss { border-color: var(--miss); }
+
+    @keyframes ripple {
+      to { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+    }
+
+    #ghost-path {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      background: rgba(8, 12, 10, 0.72);
+      backdrop-filter: blur(6px);
+    }
+
+    #overlay.hidden { display: none; }
+
+    .panel {
+      width: min(34rem, calc(100vw - 2rem));
+      padding: 1.75rem 1.6rem 1.4rem;
+      border: 1px solid var(--line);
+      border-radius: 0.9rem;
+      background:
+        linear-gradient(180deg, rgba(232, 240, 235, 0.04), transparent 40%),
+        rgba(16, 24, 22, 0.92);
+    }
+
+    .panel h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.55rem;
+    }
+
+    .panel p {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .panel ul {
+      list-style: none;
+      display: grid;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.9rem;
+    }
+
+    .panel li {
+      display: grid;
+      grid-template-columns: 3.2rem 1fr;
+      gap: 0.6rem;
+      align-items: baseline;
+    }
+
+    .panel kbd {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.3rem;
+      background: rgba(232, 240, 235, 0.08);
+      border: 1px solid var(--line);
+      width: fit-content;
+    }
+
+    .panel .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .toast {
+      position: fixed;
+      top: 5.2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      z-index: 25;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s, transform 0.18s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.hit { background: rgba(62, 207, 142, 0.2); color: var(--good); }
+    .toast.miss { background: rgba(226, 109, 109, 0.2); color: var(--miss); }
+
+    #timer-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 3px;
+      background: rgba(62, 207, 142, 0.85);
+      transform-origin: left center;
+      scale: 1 1;
+      z-index: 21;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="timer-bar"></div>
+
+  <div id="hud">
+    <div class="brand">
+      Mouse Keys
+      <strong id="mode-label">Landing</strong>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="s-hits">0</b><span>HITS</span></div>
+      <div class="stat"><b id="s-acc">—</b><span>ACC</span></div>
+      <div class="stat"><b id="s-avg">—</b><span>AVG ms</span></div>
+      <div class="stat"><b id="s-streak">0</b><span>STREAK</span></div>
+    </div>
+    <div class="controls">
+      <select id="mode" title="Режим">
+        <option value="landing">Landing</option>
+        <option value="precision">Precision</option>
+        <option value="sprint">Sprint 60s</option>
+        <option value="ladder">Ladder</option>
+      </select>
+      <button type="button" id="btn-path" title="Показать вектор до цели">path</button>
+      <button type="button" id="btn-pause">pause</button>
+      <button type="button" class="primary" id="btn-restart">restart</button>
+    </div>
+  </div>
+
+  <svg id="ghost-path" width="100%" height="100%"></svg>
+  <div id="field"></div>
+  <div id="hint">
+    <div id="hint-gears"></div>
+    <p id="hint-text">Кликай цели курсором с mouse keys. Space — пауза.</p>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <div id="overlay">
+    <div class="panel">
+      <h1>Тренировка mouse keys</h1>
+      <p>
+        Двигай <em>системный</em> курсор слоем мыши (база / F / D) и кликай цели.
+        Игра не эмулирует WASD — учит именно твои передачи.
+      </p>
+      <ul>
+        <li><kbd>D</kbd><span>далеко по экрану (~8×)</span></li>
+        <li><kbd>F</kbd><span>средний прыжок (~4×)</span></li>
+        <li><kbd>база</kbd><span>точная доводка (по умолчанию)</span></li>
+      </ul>
+      <div class="row">
+        <button type="button" class="primary" id="btn-start">Начать</button>
+        <select id="mode-start">
+          <option value="landing">Landing — попадание</option>
+          <option value="precision">Precision — мелкие цели</option>
+          <option value="sprint">Sprint — 60 секунд</option>
+          <option value="ladder">Ladder — цели мельчают</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const field = document.getElementById("field");
+    const overlay = document.getElementById("overlay");
+    const hintGears = document.getElementById("hint-gears");
+    const hintText = document.getElementById("hint-text");
+    const toastEl = document.getElementById("toast");
+    const ghostPath = document.getElementById("ghost-path");
+    const timerBar = document.getElementById("timer-bar");
+    const modeSelect = document.getElementById("mode");
+    const modeStart = document.getElementById("mode-start");
+    const modeLabel = document.getElementById("mode-label");
+
+    const els = {
+      hits: document.getElementById("s-hits"),
+      acc: document.getElementById("s-acc"),
+      avg: document.getElementById("s-avg"),
+      streak: document.getElementById("s-streak"),
+    };
+
+    const MODE_NAMES = {
+      landing: "Landing",
+      precision: "Precision",
+      sprint: "Sprint 60s",
+      ladder: "Ladder",
+    };
+
+    const state = {
+      running: false,
+      paused: false,
+      showPath: true,
+      mode: "landing",
+      hits: 0,
+      attempts: 0,
+      streak: 0,
+      bestStreak: 0,
+      times: [],
+      spawnAt: 0,
+      lastHit: null,
+      target: null,
+      ladderStep: 0,
+      sprintEndsAt: 0,
+      sprintRaf: 0,
+    };
+
+    function pad() {
+      return {
+        top: 88,
+        bottom: 110,
+        side: 48,
+      };
+    }
+
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function dist(a, b) {
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      return Math.hypot(dx, dy);
+    }
+
+    function targetRadius(mode, ladderStep) {
+      if (mode === "precision") return rand(10, 16);
+      if (mode === "ladder") return Math.max(8, 34 - ladderStep * 2.2);
+      return rand(18, 36);
+    }
+
+    function placeTarget() {
+      if (state.target) state.target.remove();
+
+      const p = pad();
+      const r = targetRadius(state.mode, state.ladderStep);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const minX = p.side + r;
+      const maxX = w - p.side - r;
+      const minY = p.top + r;
+      const maxY = h - p.bottom - r;
+
+      let x = rand(minX, maxX);
+      let y = rand(minY, maxY);
+      const origin = state.lastHit || { x: w / 2, y: h / 2 };
+
+      // Prefer a useful travel distance for gear practice.
+      for (let i = 0; i < 12; i++) {
+        const cand = { x: rand(minX, maxX), y: rand(minY, maxY) };
+        const d = dist(origin, cand);
+        const wantMin = state.mode === "precision" ? 120 : 220;
+        const wantMax = Math.min(w, h) * (state.mode === "precision" ? 0.55 : 0.85);
+        if (d >= wantMin && d <= wantMax) {
+          x = cand.x;
+          y = cand.y;
+          break;
+        }
+        x = cand.x;
+        y = cand.y;
+      }
+
+      const el = document.createElement("div");
+      el.className = "target" + (r <= 16 ? " precision" : "");
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.style.width = `${r * 2}px`;
+      el.style.height = `${r * 2}px`;
+      field.appendChild(el);
+
+      state.target = el;
+      state.targetPos = { x, y, r };
+      state.spawnAt = performance.now();
+      updateHint(origin, state.targetPos);
+      drawPath(origin, state.targetPos);
+    }
+
+    function gearAdvice(distancePx, radius) {
+      // Rough screen fractions — tuned for typical laptop + MOVE_VAL≈600 (fine default).
+      const diag = Math.hypot(window.innerWidth, window.innerHeight);
+      const rel = distancePx / diag;
+      const gears = [];
+
+      if (rel > 0.28) gears.push({ key: "D", cls: "d", label: "D 8×" });
+      else if (rel > 0.14) gears.push({ key: "F", cls: "f", label: "F 4×" });
+
+      gears.push({ key: "·", cls: "base", label: "база" });
+
+      let text;
+      if (rel > 0.28) {
+        text = "Дальний перелёт → D короткими импульсами, отпусти, доведи базой и клик.";
+      } else if (rel > 0.14) {
+        text = "Средняя дистанция → F, отпусти, доведи базой.";
+      } else if (radius <= 16) {
+        text = "Мелкая цель → только база, без warp.";
+      } else {
+        text = "Близко → короткие тапы базой.";
+      }
+
+      return { gears, text, rel };
+    }
+
+    function updateHint(from, to) {
+      const d = dist(from, to);
+      const advice = gearAdvice(d, to.r);
+      hintGears.innerHTML = advice.gears
+        .map((g) => `<span class="gear ${g.cls}">${g.label}</span>`)
+        .join("<span style='color:var(--muted);margin:0 .2rem'>→</span>");
+      hintText.textContent = `${advice.text}  ·  ${Math.round(d)} px`;
+    }
+
+    function drawPath(from, to) {
+      ghostPath.innerHTML = "";
+      if (!state.showPath || !from || !to) return;
+
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", from.x);
+      line.setAttribute("y1", from.y);
+      line.setAttribute("x2", to.x);
+      line.setAttribute("y2", to.y);
+      line.setAttribute("stroke", "rgba(232,240,235,0.18)");
+      line.setAttribute("stroke-width", "1.5");
+      line.setAttribute("stroke-dasharray", "5 7");
+
+      const start = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      start.setAttribute("cx", from.x);
+      start.setAttribute("cy", from.y);
+      start.setAttribute("r", "4");
+      start.setAttribute("fill", "rgba(143,212,168,0.7)");
+
+      ghostPath.appendChild(line);
+      ghostPath.appendChild(start);
+    }
+
+    function toast(msg, ok) {
+      toastEl.textContent = msg;
+      toastEl.className = "toast show " + (ok ? "hit" : "miss");
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.classList.remove("show"), 700);
+    }
+
+    function ripple(x, y, ok) {
+      const el = document.createElement("div");
+      el.className = "ripple" + (ok ? "" : " miss");
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.style.width = "28px";
+      el.style.height = "28px";
+      field.appendChild(el);
+      setTimeout(() => el.remove(), 450);
+    }
+
+    function renderStats() {
+      els.hits.textContent = String(state.hits);
+      els.streak.textContent = String(state.streak);
+      if (state.attempts === 0) {
+        els.acc.textContent = "—";
+        els.avg.textContent = "—";
+      } else {
+        els.acc.textContent = `${Math.round((state.hits / state.attempts) * 100)}%`;
+        if (state.times.length) {
+          const avg = state.times.reduce((a, b) => a + b, 0) / state.times.length;
+          els.avg.textContent = String(Math.round(avg));
+        }
+      }
+    }
+
+    function endSprint() {
+      state.running = false;
+      cancelAnimationFrame(state.sprintRaf);
+      timerBar.style.display = "none";
+      overlay.classList.remove("hidden");
+      const panel = overlay.querySelector(".panel");
+      panel.querySelector("h1").textContent = "Sprint окончен";
+      panel.querySelector("p").textContent =
+        `Попаданий: ${state.hits} · точность: ${els.acc.textContent} · avg: ${els.avg.textContent} ms · лучший стрик: ${state.bestStreak}`;
+      panel.querySelector("ul").style.display = "none";
+    }
+
+    function tickSprint() {
+      if (!state.running || state.mode !== "sprint") return;
+      const left = state.sprintEndsAt - performance.now();
+      if (left <= 0) {
+        endSprint();
+        return;
+      }
+      timerBar.style.transform = `scaleX(${left / 60000})`;
+      state.sprintRaf = requestAnimationFrame(tickSprint);
+    }
+
+    function onFieldClick(e) {
+      if (!state.running || state.paused) return;
+
+      const x = e.clientX;
+      const y = e.clientY;
+      const t = state.targetPos;
+      if (!t) return;
+
+      state.attempts += 1;
+      const hit = dist({ x, y }, t) <= t.r + 1;
+
+      if (hit) {
+        const ms = performance.now() - state.spawnAt;
+        state.hits += 1;
+        state.streak += 1;
+        state.bestStreak = Math.max(state.bestStreak, state.streak);
+        state.times.push(ms);
+        state.lastHit = { x: t.x, y: t.y };
+        if (state.mode === "ladder") state.ladderStep += 1;
+        ripple(t.x, t.y, true);
+        toast(`${Math.round(ms)} ms`, true);
+        placeTarget();
+      } else {
+        state.streak = 0;
+        ripple(x, y, false);
+        toast("miss", false);
+        // keep same target — practice recovery without warp panic
+        updateHint({ x, y }, t);
+        drawPath({ x, y }, t);
+      }
+      renderStats();
+    }
+
+    function startGame(mode) {
+      state.mode = mode;
+      state.running = true;
+      state.paused = false;
+      state.hits = 0;
+      state.attempts = 0;
+      state.streak = 0;
+      state.bestStreak = 0;
+      state.times = [];
+      state.ladderStep = 0;
+      state.lastHit = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+      modeSelect.value = mode;
+      modeStart.value = mode;
+      modeLabel.textContent = MODE_NAMES[mode];
+      overlay.classList.add("hidden");
+      overlay.querySelector("ul").style.display = "";
+      overlay.querySelector("h1").textContent = "Тренировка mouse keys";
+      document.getElementById("btn-pause").textContent = "pause";
+      hintText.parentElement.style.opacity = "1";
+
+      if (mode === "sprint") {
+        timerBar.style.display = "block";
+        timerBar.style.transform = "scaleX(1)";
+        state.sprintEndsAt = performance.now() + 60000;
+        cancelAnimationFrame(state.sprintRaf);
+        state.sprintRaf = requestAnimationFrame(tickSprint);
+      } else {
+        timerBar.style.display = "none";
+        cancelAnimationFrame(state.sprintRaf);
+      }
+
+      renderStats();
+      placeTarget();
+    }
+
+    function togglePause() {
+      if (!state.running) return;
+      state.paused = !state.paused;
+      document.getElementById("btn-pause").textContent = state.paused ? "resume" : "pause";
+      if (state.target) state.target.style.opacity = state.paused ? "0.35" : "1";
+      if (state.mode === "sprint") {
+        if (state.paused) {
+          state._sprintLeft = state.sprintEndsAt - performance.now();
+          cancelAnimationFrame(state.sprintRaf);
+        } else {
+          state.sprintEndsAt = performance.now() + (state._sprintLeft || 0);
+          state.sprintRaf = requestAnimationFrame(tickSprint);
+        }
+      }
+    }
+
+    field.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      onFieldClick(e);
+    });
+
+    document.getElementById("btn-start").addEventListener("click", () => {
+      startGame(modeStart.value);
+    });
+
+    document.getElementById("btn-restart").addEventListener("click", () => {
+      startGame(modeSelect.value);
+    });
+
+    document.getElementById("btn-pause").addEventListener("click", togglePause);
+
+    document.getElementById("btn-path").addEventListener("click", (e) => {
+      state.showPath = !state.showPath;
+      e.currentTarget.classList.toggle("active", state.showPath);
+      if (state.targetPos) {
+        drawPath(state.lastHit, state.targetPos);
+      } else {
+        ghostPath.innerHTML = "";
+      }
+    });
+    document.getElementById("btn-path").classList.add("active");
+
+    modeSelect.addEventListener("change", () => {
+      if (state.running) startGame(modeSelect.value);
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (!state.running) startGame(modeStart.value);
+        else togglePause();
+      } else if (e.key === "r" || e.key === "R") {
+        if (state.running) startGame(modeSelect.value);
+      } else if (e.key === "p" || e.key === "P") {
+        document.getElementById("btn-path").click();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (state.running && state.targetPos) placeTarget();
+    });
+  </script>
+</body>
+</html>
