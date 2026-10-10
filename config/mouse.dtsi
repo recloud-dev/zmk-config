@@ -4,7 +4,8 @@
  * Include AFTER MOUSE_WARP_* are #defined.
  *
  * On mouse layer (left hand holds, right hand moves):
- *   default = fine (former D / ½ of old base)
+ *   default = fine
+ *   S = warp 2x
  *   F = warp mid (~4x)
  *   D = warp fast (~8x)
  */
@@ -38,6 +39,10 @@
         layers = <MOUSE_WARP_LAYER>;
         input-processors = <&zip_xy_scaler 4 1>;
     };
+    warp_2x {
+        layers = <MOUSE_WARP_2X_LAYER>;
+        input-processors = <&zip_xy_scaler 2 1>;
+    };
 };
 
 &msc_input_listener {
@@ -48,5 +53,9 @@
     warp {
         layers = <MOUSE_WARP_LAYER>;
         input-processors = <&zip_scroll_scaler 2 1>;
+    };
+    warp_2x {
+        layers = <MOUSE_WARP_2X_LAYER>;
+        input-processors = <&zip_scroll_scaler 3 2>;
     };
 };

@@ -16,6 +16,7 @@
 #define MANAGE_LAYER      5
 #define MOUSE_WARP_LAYER       6
 #define MOUSE_WARP_FAST_LAYER  7
+#define MOUSE_WARP_2X_LAYER    8
 
 /* Pointing defaults + &mmv/&msc accel + precision/warp scalers */
 #include "mouse.dtsi"
@@ -356,10 +357,10 @@
         };
 
         mouse_layer {
-            /* Left speeds: default=fine, F=4x, D=8x. Right: IJKL move, O/; scroll, thumbs click/tog. */
+            /* Left speeds: default=fine, S=2x, F=4x, D=8x. Right: IJKL move, O/; scroll, thumbs click/tog. */
             bindings = <
   &none  &none  &none  &none                      &none                 &none        &none  &none           &mmv MOVE_UP        &none                &msc SCRL_UP            &none
-  &none  &trans &trans &mo MOUSE_WARP_FAST_LAYER  &mo MOUSE_WARP_LAYER  &none        &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN      &mmv MOVE_RIGHT      &msc SCRL_DOWN          &none
+  &none  &trans &mo MOUSE_WARP_2X_LAYER &mo MOUSE_WARP_FAST_LAYER  &mo MOUSE_WARP_LAYER  &none        &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN      &mmv MOVE_RIGHT      &msc SCRL_DOWN          &none
   &none  &none  &none  &none                      &none                 &none        &none  &msc SCRL_LEFT  &none               &msc SCRL_RIGHT      &none                   &none
               &tog MOUSE_LAYER  &trans  &trans  &trans        &mkp MB3        &mkp MB1        &mkp MB2            &tog MOUSE_LAYER
             >;
@@ -406,6 +407,17 @@
 
         /* Mostly transparent — activates fast warp scaler while held with mouse keys */
         mouse_warp_fast_layer {
+            bindings = <
+  &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
+
+                  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans
+            >;
+        };
+
+        /* Mostly transparent — activates 2x warp scaler while held with mouse keys */
+        mouse_warp_2x_layer {
             bindings = <
   &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
   &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans

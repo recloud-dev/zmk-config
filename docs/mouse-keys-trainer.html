@@ -21,6 +21,7 @@
       --target-core: #d7f0ff;
       --gear-d: #ff8b6a;
       --gear-f: #f0c35a;
+      --gear-s: #b8d47a;
       --gear-base: #8fd4a8;
     }
 
@@ -150,6 +151,7 @@
 
     #hint .gear.d { background: rgba(255, 139, 106, 0.18); color: var(--gear-d); }
     #hint .gear.f { background: rgba(240, 195, 90, 0.18); color: var(--gear-f); }
+    #hint .gear.s { background: rgba(184, 212, 122, 0.18); color: var(--gear-s); }
     #hint .gear.base { background: rgba(143, 212, 168, 0.16); color: var(--gear-base); }
 
     #hint p {
@@ -363,12 +365,13 @@
     <div class="panel">
       <h1>Тренировка mouse keys</h1>
       <p>
-        Двигай <em>системный</em> курсор слоем мыши (база / F / D) и кликай цели.
+        Двигай <em>системный</em> курсор слоем мыши (база / S / F / D) и кликай цели.
         Игра не эмулирует WASD — учит именно твои передачи.
       </p>
       <ul>
         <li><kbd>D</kbd><span>далеко по экрану (~8×)</span></li>
         <li><kbd>F</kbd><span>средний прыжок (~4×)</span></li>
+        <li><kbd>S</kbd><span>лёгкий разгон (~2×)</span></li>
         <li><kbd>база</kbd><span>точная доводка (по умолчанию)</span></li>
       </ul>
       <div class="row">
@@ -505,6 +508,7 @@
 
       if (rel > 0.28) gears.push({ key: "D", cls: "d", label: "D 8×" });
       else if (rel > 0.14) gears.push({ key: "F", cls: "f", label: "F 4×" });
+      else if (rel > 0.07) gears.push({ key: "S", cls: "s", label: "S 2×" });
 
       gears.push({ key: "·", cls: "base", label: "база" });
 
@@ -513,6 +517,8 @@
         text = "Дальний перелёт → D короткими импульсами, отпусти, доведи базой и клик.";
       } else if (rel > 0.14) {
         text = "Средняя дистанция → F, отпусти, доведи базой.";
+      } else if (rel > 0.07) {
+        text = "Чуть дальше → S 2×, потом база.";
       } else if (radius <= 16) {
         text = "Мелкая цель → только база, без warp.";
       } else {
