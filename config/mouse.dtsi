@@ -1,14 +1,16 @@
 /*
  * Mouse / pointing for Mriya — upstream ZMK pointing API.
  *
- * Include AFTER MOUSE_PREC_LAYER / MOUSE_WARP_LAYER are #defined.
+ * Include AFTER MOUSE_PREC_LAYER / MOUSE_WARP_* are #defined.
  *
- * Base speed is moderate; on mouse layer hold left E (warp, ~3x)
- * or D (precision, ½x) while moving with the right hand.
+ * On mouse layer (left hand holds, right hand moves):
+ *   D = precision (½x)
+ *   W = warp mid (~4x)
+ *   E = warp fast (~8x)
  */
 
-#define ZMK_POINTING_DEFAULT_MOVE_VAL 900
-#define ZMK_POINTING_DEFAULT_SCRL_VAL 20
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 1200
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 24
 
 #include <dt-bindings/zmk/pointing.h>
 #include <input/processors.dtsi>
@@ -16,7 +18,7 @@
 
 &mmv {
     delay-ms = <0>;
-    time-to-max-speed-ms = <500>;
+    time-to-max-speed-ms = <400>;
     acceleration-exponent = <1>;
 };
 
@@ -26,10 +28,15 @@
     acceleration-exponent = <0>;
 };
 
+/* First matching override wins — list faster warps before slower ones. */
 &mmv_input_listener {
+    warp_fast {
+        layers = <MOUSE_WARP_FAST_LAYER>;
+        input-processors = <&zip_xy_scaler 8 1>;
+    };
     warp {
         layers = <MOUSE_WARP_LAYER>;
-        input-processors = <&zip_xy_scaler 3 1>;
+        input-processors = <&zip_xy_scaler 4 1>;
     };
     precision {
         layers = <MOUSE_PREC_LAYER>;
@@ -38,6 +45,10 @@
 };
 
 &msc_input_listener {
+    warp_fast {
+        layers = <MOUSE_WARP_FAST_LAYER>;
+        input-processors = <&zip_scroll_scaler 4 1>;
+    };
     warp {
         layers = <MOUSE_WARP_LAYER>;
         input-processors = <&zip_scroll_scaler 2 1>;

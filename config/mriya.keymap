@@ -14,8 +14,9 @@
 #define NUMBERS_LAYER     3
 #define SYSTEM_LAYER      4
 #define MANAGE_LAYER      5
-#define MOUSE_PREC_LAYER  6
-#define MOUSE_WARP_LAYER  7
+#define MOUSE_PREC_LAYER       6
+#define MOUSE_WARP_LAYER       7
+#define MOUSE_WARP_FAST_LAYER  8
 
 /* Pointing defaults + &mmv/&msc accel + precision/warp scalers */
 #include "mouse.dtsi"
@@ -356,11 +357,11 @@
         };
 
         mouse_layer {
-            /* Left: hold E=warp (~3x), D=precision (½x). Right: IJKL move, O/; scroll, thumbs click/tog. */
+            /* Left speeds: D=½x, W=4x, E=8x. Right: IJKL move, O/; scroll, thumbs click/tog. */
             bindings = <
-  &none  &none  &mo MOUSE_WARP_LAYER  &none   &none   &none        &none  &none           &mmv MOVE_UP        &none                &msc SCRL_UP            &none
-  &none  &trans &trans                &mo MOUSE_PREC_LAYER  &trans  &none        &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN      &mmv MOVE_RIGHT      &msc SCRL_DOWN          &none
-  &none  &none  &none                 &none   &none   &none        &none  &msc SCRL_LEFT  &none               &msc SCRL_RIGHT      &none                   &none
+  &none  &mo MOUSE_WARP_LAYER  &mo MOUSE_WARP_FAST_LAYER  &none   &none   &none        &none  &none           &mmv MOVE_UP        &none                &msc SCRL_UP            &none
+  &none  &trans &trans         &mo MOUSE_PREC_LAYER       &trans  &none        &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN      &mmv MOVE_RIGHT      &msc SCRL_DOWN          &none
+  &none  &none  &none          &none                      &none   &none        &none  &msc SCRL_LEFT  &none               &msc SCRL_RIGHT      &none                   &none
               &tog MOUSE_LAYER  &trans  &trans  &trans        &mkp MB3        &mkp MB1        &mkp MB2            &tog MOUSE_LAYER
             >;
         };
@@ -404,8 +405,19 @@
             >;
         };
 
-        /* Mostly transparent — activates warp scaler while held with mouse keys */
+        /* Mostly transparent — activates mid warp scaler while held with mouse keys */
         mouse_warp_layer {
+            bindings = <
+  &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
+  &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
+
+                  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans
+            >;
+        };
+
+        /* Mostly transparent — activates fast warp scaler while held with mouse keys */
+        mouse_warp_fast_layer {
             bindings = <
   &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
   &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans  &trans  &trans  &trans  &trans
