@@ -2,30 +2,9 @@
  * Copyright (c) 2023 Andrei Gaevskii
  *
  * SPDX-License-Identifier: MIT
+ *
+ * Board stub — real keymap lives at config/mriya.keymap
+ * (included from mriya_left.keymap / mriya_right.keymap).
  */
 
-#include <behaviors.dtsi>
-#include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/bt.h>
-
-&lt {
-    quick_tap_ms = <200>;
-};
-
-&mt {
-    quick_tap_ms = <200>;
-};
-
-/ {
-    keymap {
-        compatible = "zmk,keymap";
-
-        default_layer {
-            bindings = <
-            &none         &none         &none         &none         &none         &none           &none         &none         &none         &none         &none        &none
-            &none         &none         &none         &none         &none         &none           &none         &none         &none         &none         &none        &none
-            &none         &none         &none         &none         &none         &none           &none         &none         &none         &none         &none        &none
-                                        &none         &none         &none         &none           &none         &none         &none         &none
-        };
-    };
-};
+#include "../../../mriya.keymap"

@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include "mriya.keymap"
+#include "../../../mriya.keymap"

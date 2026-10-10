@@ -1,0 +1,49 @@
+/*
+ * Mouse / pointing for Mriya — upstream ZMK pointing API.
+ *
+ * Include AFTER MOUSE_PREC_LAYER / MOUSE_WARP_LAYER are #defined.
+ *
+ * Base speed is moderate; on mouse layer hold left E (warp, ~3x)
+ * or D (precision, ½x) while moving with the right hand.
+ */
+
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 900
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 20
+
+#include <dt-bindings/zmk/pointing.h>
+#include <input/processors.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+&mmv {
+    delay-ms = <0>;
+    time-to-max-speed-ms = <500>;
+    acceleration-exponent = <1>;
+};
+
+&msc {
+    delay-ms = <0>;
+    time-to-max-speed-ms = <300>;
+    acceleration-exponent = <0>;
+};
+
+&mmv_input_listener {
+    warp {
+        layers = <MOUSE_WARP_LAYER>;
+        input-processors = <&zip_xy_scaler 3 1>;
+    };
+    precision {
+        layers = <MOUSE_PREC_LAYER>;
+        input-processors = <&zip_xy_scaler 1 2>;
+    };
+};
+
+&msc_input_listener {
+    warp {
+        layers = <MOUSE_WARP_LAYER>;
+        input-processors = <&zip_scroll_scaler 2 1>;
+    };
+    precision {
+        layers = <MOUSE_PREC_LAYER>;
+        input-processors = <&zip_scroll_scaler 1 2>;
+    };
+};
