@@ -60,4 +60,4 @@ fi
 if tmux list-sessions >/dev/null 2>&1; then
     tmux source-file "$install_dir/tmux.conf"
 fi
-printf 'Installed F13–F18, F20–F21. F19 is unbound. Reload Ghostty config and restart Codex to load F18.\n'
+printf 'Installed agent keys (Ctrl+Alt+Shift+F1–F9). FN+P is disabled. Reload Ghostty config and restart Codex for model selection.\n'

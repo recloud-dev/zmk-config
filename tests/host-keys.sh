@@ -2,6 +2,16 @@
 set -eu
 
 root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
+while IFS= read -r binding; do
+    trigger=${binding#*= }
+    trigger=${trigger%%=*}
+    case "$trigger" in
+        f14|f15|f17|f18)
+            printf 'Agent key conflicts with macOS/Rectangle: %s\n' "$trigger" >&2
+            exit 1
+            ;;
+    esac
+done < "$root/config/host/ghostty.conf"
 real_tmux=$(command -v tmux)
 task_socket="mriya-host-test-$$"
 work=$(mktemp -d)

@@ -30,9 +30,9 @@ layers:
     - [{t: FN, h: удержать, type: changed}, 'Z Я', 'X Ч', 'C С', 'V М', 'B И', 'N Т', 'M Ь', ', б', '. ю', {t: '/', s: '?', type: changed}, {t: '] ъ', type: changed}]
     - [{t: Мышь, h: удержать, s: 'тап: вкл/выкл'}, {t: Tab, h: NAV}, {t: Space, h: SYM}, {t: Enter, h: FN}, {t: Shift, s: one-shot, type: changed}, {t: Enter, h: SYM}, {t: Backspace, h: NAV}, {t: Esc, h: Мышь}]
   '1 · FN — функции / агенты':
-    - [F1, F2, F3, F4, F5, F6, '', {t: Монитор, h: F16, type: host}, {t: Zoom, h: F17, type: host}, {t: Модель, h: F18, type: host}, {t: F19, h: резерв, type: ghost}, '']
-    - [F7, F8, F9, F10, F11, F12, '', {t: 'Ждёт ответа', h: F13, type: host}, {t: 'Список агентов', h: F14, type: host}, {t: Назад, h: F15, type: host}, {t: 'Reason −', h: F20, type: host}, {t: 'Reason +', h: F21, type: host}]
-    - [{t: FN, type: held}, F13, F14, F15, F16, F17, F18, '', '', '', '', '']
+    - [F1, F2, F3, F4, F5, F6, '', {t: Монитор, h: Meh+F4, type: host}, {t: Zoom, h: Meh+F5, type: host}, {t: Модель, h: Meh+F6, type: host}, {t: Резерв, type: ghost}, '']
+    - [F7, F8, F9, F10, F11, F12, '', {t: 'Ждёт ответа', h: Meh+F1, type: host}, {t: 'Список агентов', h: Meh+F2, type: host}, {t: Назад, h: Meh+F3, type: host}, {t: 'Reason −', h: Meh+F8, type: host}, {t: 'Reason +', h: Meh+F9, type: host}]
+    - [{t: FN, type: held}, Meh+F1, Meh+F2, Meh+F3, Meh+F4, Meh+F5, Meh+F6, '', '', '', '', '']
     - [{t: '▽', type: trans}, {t: Tab, type: changed}, {t: Space, type: changed}, {t: FN, type: held}, {t: Shift, type: changed}, {t: Enter, type: changed}, {t: Backspace, type: changed}, {t: Esc, type: changed}]
   '2 · Мышь — движение / прокрутка':
     - ['', '', '', '', '', '', '', '', '↑', '', 'Scroll ↑', '']

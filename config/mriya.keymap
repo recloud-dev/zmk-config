@@ -25,6 +25,7 @@
 
 // #define HYPER <&kp LEFT_GUI &kp LEFT_ALT &kp LEFT_CONTROL &kp LEFT_SHIFT>
 #define HYPER LS(LC(LG(LEFT_ALT)))
+#define AGENT_KEY(KEY) LC(LA(LS(KEY)))
 #define MEH LEFT_ALT(LC(LS))
 //#define MEH <&kp LEFT_ALT &kp LEFT_CONTROL &kp LEFT_SHIFT>
 
@@ -317,9 +318,9 @@
 
         functional_layer {
             bindings = <
-  &kp F1   &kp F2   &kp F3    &kp F4   &kp F5    &kp F6     &none  &kp F16  &kp F17  &kp F18  &kp F19  &none
-  &kp F7   &kp F8   &kp F9    &kp F10  &kp F11   &kp F12    &none  &kp F13  &kp F14  &kp F15  &kp F20  &kp F21
-  &trans   &kp F13  &kp F14   &kp F15  &kp F16   &kp F17    &kp F18  &none  &none   &none   &none   &none
+  &kp F1   &kp F2   &kp F3    &kp F4   &kp F5    &kp F6     &none  &kp AGENT_KEY(F4)  &kp AGENT_KEY(F5)  &kp AGENT_KEY(F6)  &none               &none
+  &kp F7   &kp F8   &kp F9    &kp F10  &kp F11   &kp F12    &none  &kp AGENT_KEY(F1)  &kp AGENT_KEY(F2)  &kp AGENT_KEY(F3)  &kp AGENT_KEY(F8)  &kp AGENT_KEY(F9)
+  &trans   &kp AGENT_KEY(F1)  &kp AGENT_KEY(F2)  &kp AGENT_KEY(F3)  &kp AGENT_KEY(F4)  &kp AGENT_KEY(F5)  &kp AGENT_KEY(F6)  &none  &none   &none   &none   &none
                     &trans  &kp TAB  &kp SPACE  &trans      &sk LSHIFT  &kp RET  &kp BACKSPACE  &kp ESCAPE
             >;
         };

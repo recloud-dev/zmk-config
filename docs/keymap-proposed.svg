@@ -436,22 +436,21 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <g transform="translate(850, 51)" class="key host keypos-7">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
 <text x="0" y="0" class="key host tap">Монитор</text>
-<text x="0" y="27" class="key host hold">F16</text>
+<text x="0" y="27" class="key host hold">Meh+F4</text>
 </g>
 <g transform="translate(918, 34)" class="key host keypos-8">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
 <text x="0" y="0" class="key host tap">Zoom</text>
-<text x="0" y="27" class="key host hold">F17</text>
+<text x="0" y="27" class="key host hold">Meh+F5</text>
 </g>
 <g transform="translate(986, 51)" class="key host keypos-9">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
 <text x="0" y="0" class="key host tap">Модель</text>
-<text x="0" y="27" class="key host hold">F18</text>
+<text x="0" y="27" class="key host hold">Meh+F6</text>
 </g>
 <g transform="translate(1054, 76)" class="key ghost keypos-10">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key ghost"/>
-<text x="0" y="0" class="key ghost tap">F19</text>
-<text x="0" y="27" class="key ghost hold">резерв</text>
+<text x="0" y="0" class="key ghost tap">Резерв</text>
 </g>
 <g transform="translate(1122, 85)" class="key keypos-11">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
@@ -488,33 +487,33 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <text x="0" y="0" class="key host tap">
 <tspan x="0" dy="-1.2em">Ждёт</tspan><tspan x="0" dy="1.2em">ответа</tspan>
 </text>
-<text x="0" y="27" class="key host hold">F13</text>
+<text x="0" y="27" class="key host hold">Meh+F1</text>
 </g>
 <g transform="translate(918, 102)" class="key host keypos-20">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
 <text x="0" y="0" class="key host tap">
 <tspan x="0" dy="-1.2em">Список</tspan><tspan x="0" dy="1.2em">агентов</tspan>
 </text>
-<text x="0" y="27" class="key host hold">F14</text>
+<text x="0" y="27" class="key host hold">Meh+F2</text>
 </g>
 <g transform="translate(986, 119)" class="key host keypos-21">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
 <text x="0" y="0" class="key host tap">Назад</text>
-<text x="0" y="27" class="key host hold">F15</text>
+<text x="0" y="27" class="key host hold">Meh+F3</text>
 </g>
 <g transform="translate(1054, 144)" class="key host keypos-22">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
 <text x="0" y="0" class="key host tap">
 <tspan x="0" dy="-1.2em">Reason</tspan><tspan x="0" dy="1.2em">−</tspan>
 </text>
-<text x="0" y="27" class="key host hold">F20</text>
+<text x="0" y="27" class="key host hold">Meh+F8</text>
 </g>
 <g transform="translate(1122, 153)" class="key host keypos-23">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
 <text x="0" y="0" class="key host tap">
 <tspan x="0" dy="-1.2em">Reason</tspan><tspan x="0" dy="1.2em">+</tspan>
 </text>
-<text x="0" y="27" class="key host hold">F21</text>
+<text x="0" y="27" class="key host hold">Meh+F9</text>
 </g>
 <g transform="translate(34, 221)" class="key held keypos-24">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key held"/>
@@ -522,27 +521,27 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 </g>
 <g transform="translate(102, 212)" class="key keypos-25">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
-<text x="0" y="0" class="key tap">F13</text>
+<text x="0" y="0" class="key tap">Meh+F1</text>
 </g>
 <g transform="translate(170, 187)" class="key keypos-26">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
-<text x="0" y="0" class="key tap">F14</text>
+<text x="0" y="0" class="key tap">Meh+F2</text>
 </g>
 <g transform="translate(238, 170)" class="key keypos-27">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
-<text x="0" y="0" class="key tap">F15</text>
+<text x="0" y="0" class="key tap">Meh+F3</text>
 </g>
 <g transform="translate(306, 187)" class="key keypos-28">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
-<text x="0" y="0" class="key tap">F16</text>
+<text x="0" y="0" class="key tap">Meh+F4</text>
 </g>
 <g transform="translate(374, 196)" class="key keypos-29">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
-<text x="0" y="0" class="key tap">F17</text>
+<text x="0" y="0" class="key tap">Meh+F5</text>
 </g>
 <g transform="translate(782, 196)" class="key keypos-30">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
-<text x="0" y="0" class="key tap">F18</text>
+<text x="0" y="0" class="key tap">Meh+F6</text>
 </g>
 <g transform="translate(850, 187)" class="key keypos-31">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
