@@ -1,5 +1,18 @@
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  host-keys:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install host test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tmux shellcheck
+      - name: Check host scripts
+        run: |
+          shellcheck config/host/agent-keys.sh config/host/install.sh scripts/draw-keymap.sh tests/host-keys.sh
+          tests/host-keys.sh
+
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main

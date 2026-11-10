@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mriya — слои</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f3f4f5; color: #24292e; font: 16px/1.55 system-ui, sans-serif; }
+  main { max-width: 1336px; margin: auto; padding: 32px 24px 60px; }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0 0 12px; }
+  h2 { font-size: 20px; margin: 28px 0 12px; }
+  p { margin: 8px 0 20px; }
+  .status { color: #57606a; }
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 24px 0 8px; }
+  select { max-width: 100%; font: inherit; background: white; border: 1px solid #afb8c1; border-radius: 6px; padding: 10px 36px 10px 12px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; }
+  .legend span::before { content: ''; display: inline-block; width: 12px; height: 12px; margin-right: 6px; border: 1px solid #b9bec5; border-radius: 3px; background: var(--swatch); }
+  .note { color: #45505c; font-size: 15px; max-width: 100ch; min-height: 3.1em; }
+  .diagram { overflow-x: auto; background: #fff; border-radius: 8px; }
+  .diagram > svg { display: block; width: 100%; min-width: 900px; height: auto; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; background: #fff; }
+  th, td { padding: 10px 14px; border-bottom: 1px solid #d8dee4; text-align: left; }
+  th { font-weight: 600; }
+  code { font-size: .95em; }
+  a { color: #1456a0; }
+  details > summary { padding: 14px 0; font-size: 18px; font-weight: 600; }
+  .hint { font-size: 14px; color: #57606a; }
+  [hidden] { display: none !important; }
+  @media (max-width: 700px) { main { padding: 24px 14px; } h1 { font-size: 24px; } .note { min-height: 0; } }
+  @media print { .layer[hidden] { display: block !important; } .toolbar { display: none; } .diagram { break-inside: avoid; } .diagram > svg { min-width: 0; } main { padding: 0; } body { background: white; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Mriya · текст и агенты</h1>
+  <p class="status">Раскладка config/mriya.keymap · биндинги: config/host/install.sh</p>
+  <div class="toolbar">
+    <label for="layer-select">Слой <select id="layer-select"><option value="layer-0">0 · Основной — EN / RU</option><option value="layer-1">1 · FN — функции / агенты</option><option value="layer-2">2 · Мышь — движение / прокрутка</option><option value="layer-3">3 · SYM — цифры / символы</option><option value="layer-4">4 · NAV — редактирование текста</option><option value="layer-5">5 · SETUP — Bluetooth / прошивка</option><option value="layer-6">6 · Мышь ×4 — прокрутка ×2</option><option value="layer-7">7 · Мышь ×8 — прокрутка ×4</option><option value="layer-8">8 · Мышь ×2 — прокрутка ×1.5</option></select></label>
+    <div class="legend" aria-label="Обозначения">
+      <span style="--swatch:#e0eedf">Ключевые изменения</span>
+      <span style="--swatch:#d7e9f7">Доступ к слою</span>
+      <span style="--swatch:#e4e2f4">Команда компьютера</span>
+    </div>
+  </div>
+  <section id="layer-0" class="layer"><p class="note">Центр — нажатие и символы EN / RU; снизу — удержание. Верхняя подпись указывает Shift или режим sticky. Все 24 combo сохранены в списке ниже; copy/paste/cut и скобки дополнительно показаны отдельными схемами.</p><div class="diagram" role="img" aria-label="0 · Основной — EN / RU">{{SVG_0}}
+</div></section><section id="layer-1" class="layer" hidden><p class="note">Доступ: удерживать FN слева внизу либо Enter/FN. Фиолетовые клавиши — команды tmux после запуска config/host/install.sh. F19 — резерв. В Codex F18 открывает пресеты: 0 — выбор модели; в Claude открывается меню модели. Одинаковые F-коды слева и справа вызывают одно действие.</p><div class="diagram" role="img" aria-label="1 · FN — функции / агенты">{{SVG_1}}
+</div></section><section id="layer-2" class="layer" hidden><p class="note">Доступ: удерживать крайнюю левую клавишу большого пальца или Esc/Мышь справа. Тап левой клавиши включает/выключает мышиный режим. Множители скорости работают при удержании.</p><div class="diagram" role="img" aria-label="2 · Мышь — движение / прокрутка">{{SVG_2}}
+</div></section><section id="layer-3" class="layer" hidden><p class="note">Доступ: удерживать Space/SYM слева либо Enter/SYM справа. RU-пунктуация соответствует обычной Russian в macOS, EN — ABC. Подписи EN у операторов означают, что нужен английский источник ввода.</p><div class="diagram" role="img" aria-label="3 · SYM — цифры / символы">{{SVG_3}}
+</div></section><section id="layer-4" class="layer" hidden><p class="note">Доступ: удерживать Tab/NAV слева либо Backspace/NAV справа. Модификаторы слева сочетаются со стрелками справа для выделения. Alt-навигацию в терминале потребуется проверить отдельно.</p><div class="diagram" role="img" aria-label="4 · NAV — редактирование текста">{{SVG_4}}
+</div></section><section id="layer-5" class="layer" hidden><p class="note">Доступ: удерживать NAV, затем Enter/SETUP слева. Служебные действия и номера Bluetooth-профилей соответствуют текущей структуре прошивки.</p><div class="diagram" role="img" aria-label="5 · SETUP — Bluetooth / прошивка">{{SVG_5}}
+</div></section><section id="layer-6" class="layer" hidden><p class="note">Эффективный вид: активен слой Мышь и удерживается F (×4). Верхний технический слой наследует кнопки мыши и меняет скорость движения и прокрутки.</p><div class="diagram" role="img" aria-label="6 · Мышь ×4 — прокрутка ×2">{{SVG_6}}
+</div></section><section id="layer-7" class="layer" hidden><p class="note">Эффективный вид: активен слой Мышь и удерживается D (×8). Верхний технический слой наследует кнопки мыши и меняет скорость движения и прокрутки.</p><div class="diagram" role="img" aria-label="7 · Мышь ×8 — прокрутка ×4">{{SVG_7}}
+</div></section><section id="layer-8" class="layer" hidden><p class="note">Эффективный вид: активен слой Мышь и удерживается S (×2). Верхний технический слой наследует кнопки мыши и меняет скорость движения и прокрутки.</p><div class="diagram" role="img" aria-label="8 · Мышь ×2 — прокрутка ×1.5">{{SVG_8}}
+</div></section>
+  <p class="hint">Голубые клавиши показывают способы доступа: для FN/NAV/SYM достаточно одной из них. Пустая клавиша отключена; ▽ наследует нижний слой. На узком экране схема прокручивается горизонтально.</p>
+  <details open>
+    <summary>Сохранённые combo основного слоя · 24</summary>
+    <p class="hint">На отдельных схемах подсвечены клавиши copy/paste/cut и скобок. Полный список сохранённых combo приведён в таблице. Знаки обозначают EN-коды; в Russian квадратные скобки дают х/ъ.</p>
+    <div class="diagram" role="img" aria-label="Клавиши семи сохранённых combo">{{SVG_COMBOS}}
+</div>
+    <div class="table-wrap"><table><thead><tr><th>Действие / EN</th><th>Физические клавиши EN / RU</th><th>Позиции</th></tr></thead><tbody><tr><td>(</td><td>U Г + I Ш</td><td>7, 8</td></tr><tr><td>)</td><td>I Ш + O Щ</td><td>8, 9</td></tr><tr><td>[</td><td>M Ь + , б</td><td>31, 32</td></tr><tr><td>]</td><td>, б + . ю</td><td>32, 33</td></tr><tr><td>Copy</td><td>X Ч + C С</td><td>26, 27</td></tr><tr><td>Paste</td><td>C С + V М</td><td>27, 28</td></tr><tr><td>Cut</td><td>X Ч + V М</td><td>26, 28</td></tr><tr><td>CapsWord</td><td>Caps + &#x27; э</td><td>12, 23</td></tr><tr><td>+</td><td>U Г + J О</td><td>7, 19</td></tr><tr><td>−</td><td>J О + M Ь</td><td>19, 31</td></tr><tr><td>^</td><td>Y Н + H Р</td><td>6, 18</td></tr><tr><td>&amp;</td><td>O Щ + L Д</td><td>9, 21</td></tr><tr><td>|</td><td>L Д + . ю</td><td>21, 33</td></tr><tr><td>*</td><td>I Ш + K Л</td><td>8, 20</td></tr><tr><td>/</td><td>K Л + , б</td><td>20, 32</td></tr><tr><td>$</td><td>R К + F А</td><td>4, 16</td></tr><tr><td>%</td><td>T Е + G П</td><td>5, 17</td></tr><tr><td>~</td><td>G П + B И</td><td>17, 29</td></tr><tr><td>#</td><td>E У + D В</td><td>3, 15</td></tr><tr><td>\</td><td>D В + C С</td><td>15, 27</td></tr><tr><td>@</td><td>W Ц + S Ы</td><td>2, 14</td></tr><tr><td>`</td><td>A Ф + Z Я</td><td>13, 25</td></tr><tr><td>_</td><td>H Р + N Т</td><td>18, 30</td></tr><tr><td>!</td><td>Q Й + A Ф</td><td>1, 13</td></tr></tbody></table></div>
+  </details>
+  <details>
+    <summary>Команды агентского блока</summary>
+    <div class="table-wrap"><table><thead><tr><th>Код</th><th>Действие</th><th>Подключение</th></tr></thead><tbody><tr><td>F13</td><td>К агенту, ждущему ответа</td><td>agent-keys.sh next → agent-jump.sh</td></tr><tr><td>F14</td><td>Список агентов</td><td>agent-keys.sh list → agent-list.sh</td></tr><tr><td>F15</td><td>Назад в исходную панель</td><td>Предыдущий pane_id сохраняется отдельно для каждого клиента tmux</td></tr><tr><td>F16</td><td>Живой монитор</td><td>agent-keys.sh monitor → agent-monitor.sh</td></tr><tr><td>F17</td><td>Развернуть / свернуть панель</td><td>tmux resize-pane -Z</td></tr><tr><td>F18</td><td>Выбор модели</td><td>Codex: F18, затем 0; Claude: штатное меню модели</td></tr><tr><td>F19</td><td>Резерв</td><td>Резерв, обработчик не назначен</td></tr><tr><td>F20 / F21</td><td>Reasoning ниже / выше</td><td>Codex: Shift+Down/Up; Claude: меню модели и Left/Right, затем Enter</td></tr></tbody></table></div>
+  </details>
+  <p class="hint">На SYM перенесены шесть combo: <code> = </code>, <code> + </code>, <code> - </code>, <code> -&gt; </code>, <code> =&gt; </code> и <code>=</code>. Круглые и квадратные скобки, copy/paste/cut остаются на основном слое.</p>
+  <p><a href="keymap-proposed.svg">Все слои в SVG</a> · <a href="keymap-proposed.yaml">Исходник keymap-drawer</a></p>
+</main>
+<script>
+  const select = document.getElementById('layer-select');
+  select.addEventListener('change', () => {
+    for (const panel of document.querySelectorAll('.layer')) {
+      panel.hidden = panel.id !== select.value;
+    }
+  });
+</script>
+</body>
+</html>

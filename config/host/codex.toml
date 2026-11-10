@@ -1,0 +1,6 @@
+[tui.keymap.chat]
+open_presets = ["shift-f6"]
+
+[tui.presets.0]
+label = "Модель"
+input = "/model"

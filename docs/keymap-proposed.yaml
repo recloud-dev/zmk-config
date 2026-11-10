@@ -1,0 +1,96 @@
+# Visual labels for config/mriya.keymap.
+layout:
+  qmk_info_json: config/mriya.json
+  layout_name: default
+draw_config:
+  key_h: 68
+  outer_pad_h: 90
+  combo_w: 48
+  combo_h: 25
+  small_pad: 5
+  separate_combo_diagrams: true
+  shrink_wide_legends: 7
+  append_colon_to_layer_header: false
+  footer_text: 'Mriya · macOS ABC / Russian'
+  svg_extra_style: |
+    svg { font-family: "DejaVu Sans", "Arial", sans-serif; font-size: 16px; }
+    text.hold, text.shifted { font-size: 11px; }
+    text.label { font-size: 22px; font-weight: 600; }
+    rect.key { fill: #f6f7f8; stroke: #b9bec5; }
+    rect.key.held { fill: #d7e9f7; }
+    rect.key.changed { fill: #e0eedf; }
+    rect.key.host { fill: #e4e2f4; }
+    rect.key.trans { fill: #fafafa; }
+    text.trans { fill: #a2a6ab; }
+    rect.combo { fill: #fff0cf; stroke: #bda36a; }
+layers:
+  '0 · Основной — EN / RU':
+    - [{t: '\ ё', type: changed}, 'Q Й', 'W Ц', 'E У', 'R К', 'T Е', 'Y Н', 'U Г', 'I Ш', 'O Щ', 'P З', {t: '[ х', type: changed}]
+    - [Caps, {t: 'A Ф', h: Ctrl}, {t: 'S Ы', h: Alt}, {t: 'D В', h: Cmd}, {t: 'F А', h: Shift}, {t: 'G П', h: Hyper}, {t: 'H Р', h: Hyper}, {t: 'J О', h: Shift}, {t: 'K Л', h: Cmd}, {t: 'L Д', h: Alt}, {t: '; ж', h: Ctrl}, "' э"]
+    - [{t: FN, h: удержать, type: changed}, 'Z Я', 'X Ч', 'C С', 'V М', 'B И', 'N Т', 'M Ь', ', б', '. ю', {t: '/', s: '?', type: changed}, {t: '] ъ', type: changed}]
+    - [{t: Мышь, h: удержать, s: 'тап: вкл/выкл'}, {t: Tab, h: NAV}, {t: Space, h: SYM}, {t: Enter, h: FN}, {t: Shift, s: one-shot, type: changed}, {t: Enter, h: SYM}, {t: Backspace, h: NAV}, {t: Esc, h: Мышь}]
+  '1 · FN — функции / агенты':
+    - [F1, F2, F3, F4, F5, F6, '', {t: Монитор, h: F16, type: host}, {t: Zoom, h: F17, type: host}, {t: Модель, h: F18, type: host}, {t: F19, h: резерв, type: ghost}, '']
+    - [F7, F8, F9, F10, F11, F12, '', {t: 'Ждёт ответа', h: F13, type: host}, {t: 'Список агентов', h: F14, type: host}, {t: Назад, h: F15, type: host}, {t: 'Reason −', h: F20, type: host}, {t: 'Reason +', h: F21, type: host}]
+    - [{t: FN, type: held}, F13, F14, F15, F16, F17, F18, '', '', '', '', '']
+    - [{t: '▽', type: trans}, {t: Tab, type: changed}, {t: Space, type: changed}, {t: FN, type: held}, {t: Shift, type: changed}, {t: Enter, type: changed}, {t: Backspace, type: changed}, {t: Esc, type: changed}]
+  '2 · Мышь — движение / прокрутка':
+    - ['', '', '', '', '', '', '', '', '↑', '', 'Scroll ↑', '']
+    - ['', {t: Ctrl}, {t: '×2', h: слой 8}, {t: '×8', h: слой 7}, {t: '×4', h: слой 6}, '', '', '←', '↓', '→', 'Scroll ↓', '']
+    - ['', '', '', '', '', '', '', 'Scroll ←', '', 'Scroll →', '', '']
+    - [{t: Мышь, type: held}, {t: '▽', type: trans}, {t: '▽', type: trans}, {t: '▽', type: trans}, 'Средняя', 'Левая', 'Правая', {t: Выход, h: мышь}]
+  '3 · SYM — цифры / символы':
+    - ['', {t: '=', h: с пробелами, type: changed}, {t: '+', h: с пробелами, type: changed}, {t: '−', h: с пробелами, type: changed}, {t: '->', h: 'EN / пробелы', type: changed}, {t: '=>', h: 'EN / пробелы', type: changed}, {t: 'RU .', h: Shift+7, type: changed}, {t: 'RU ,', h: Shift+6, type: changed}, {t: 'RU ;', h: Shift+8, type: changed}, {t: 'RU :', h: Shift+5, type: changed}, {t: '!', h: Shift+1}, {t: '?', h: Shift+/}]
+    - ['', {t: '=', h: KP}, {t: '+', h: KP}, {t: '−', h: KP}, {t: '*', h: KP}, {t: '/', h: KP}, {t: 'EN .', h: DOT, type: changed}, {t: 'EN ,', h: COMMA, type: changed}, {t: '<=', h: EN}, {t: '>=', h: EN}, {t: ':=', h: EN}, {t: 'EN ;', h: SEMI}]
+    - ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '']
+    - [{t: '▽', type: trans}, {t: '▽', type: trans}, {t: SYM, type: held}, {t: '▽', type: trans}, {t: '▽', type: trans}, {t: SYM, type: held}, {t: '▽', type: trans}, {t: '▽', type: trans}]
+  '4 · NAV — редактирование текста':
+    - ['', {t: Undo, h: Cmd+Z}, {t: Redo, h: Cmd+Shift+Z}, {t: Cut, h: Cmd+X}, {t: Copy, h: Cmd+C}, {t: Paste, h: Cmd+V}, {t: 'Удалить слово ←', h: Alt+BS}, {t: 'Слово ←', h: Alt+←}, {t: '↑'}, {t: 'Слово →', h: Alt+→}, {t: 'Удалить слово →', h: Alt+Del}, '']
+    - ['', {t: Ctrl}, {t: Alt}, {t: Cmd}, {t: Shift}, '', '←', '↓', '↑', '→', {t: Delete}, '']
+    - ['', {t: Всё, h: Cmd+A}, '', '', '', '', {t: 'Начало строки', h: Cmd+←}, {t: 'Начало текста', h: Cmd+↑}, {t: PgUp}, {t: PgDn}, {t: 'Конец строки', h: Cmd+→}, {t: 'Конец текста', h: Cmd+↓}]
+    - [{t: '▽', type: trans}, {t: NAV, type: held}, {t: Space, type: changed}, {t: Enter, h: SETUP}, {t: Shift, type: changed}, {t: Enter, type: changed}, {t: NAV, type: held}, {t: Esc, type: changed}]
+  '5 · SETUP — Bluetooth / прошивка':
+    - [Boot, '', '', '', '', '', '', '', '', '', '', Boot]
+    - [BT-Clear, BT-0, BT-1, BT-2, BT-3, BT-4, BT-4, BT-3, BT-2, BT-1, BT-0, BT-Clear]
+    - [Reset, '', '', '', '', '', '', '', '', '', '', Reset]
+    - ['', {t: NAV, type: held}, '', {t: SETUP, type: held}, {t: '▽', type: trans}, '', {t: NAV, type: held}, '']
+  '6 · Мышь ×4 — прокрутка ×2':
+    - ['', '', '', '', '', '', '', '', '↑ ×4', '', 'Scroll ↑ ×2', '']
+    - ['', Ctrl, '×2', '×8', {t: '×4', type: held}, '', '', '← ×4', '↓ ×4', '→ ×4', 'Scroll ↓ ×2', '']
+    - ['', '', '', '', '', '', '', 'Scroll ← ×2', '', 'Scroll → ×2', '', '']
+    - [{t: Мышь, type: held}, {t: '▽', type: trans}, {t: '▽', type: trans}, {t: '▽', type: trans}, Средняя, Левая, Правая, Выход]
+  '7 · Мышь ×8 — прокрутка ×4':
+    - ['', '', '', '', '', '', '', '', '↑ ×8', '', 'Scroll ↑ ×4', '']
+    - ['', Ctrl, '×2', {t: '×8', type: held}, '×4', '', '', '← ×8', '↓ ×8', '→ ×8', 'Scroll ↓ ×4', '']
+    - ['', '', '', '', '', '', '', 'Scroll ← ×4', '', 'Scroll → ×4', '', '']
+    - [{t: Мышь, type: held}, {t: '▽', type: trans}, {t: '▽', type: trans}, {t: '▽', type: trans}, Средняя, Левая, Правая, Выход]
+  '8 · Мышь ×2 — прокрутка ×1.5':
+    - ['', '', '', '', '', '', '', '', '↑ ×2', '', 'Scroll ↑ ×1.5', '']
+    - ['', Ctrl, {t: '×2', type: held}, '×8', '×4', '', '', '← ×2', '↓ ×2', '→ ×2', 'Scroll ↓ ×1.5', '']
+    - ['', '', '', '', '', '', '', 'Scroll ← ×1.5', '', 'Scroll → ×1.5', '', '']
+    - [{t: Мышь, type: held}, {t: '▽', type: trans}, {t: '▽', type: trans}, {t: '▽', type: trans}, Средняя, Левая, Правая, Выход]
+combos:
+  - {p: [7, 8], k: '(', l: ['0 · Основной — EN / RU'], a: top, o: 0.7}
+  - {p: [8, 9], k: ')', l: ['0 · Основной — EN / RU'], a: top, o: 1.3}
+  - {p: [31, 32], k: '[', l: ['0 · Основной — EN / RU'], a: bottom, o: 0.7}
+  - {p: [32, 33], k: ']', l: ['0 · Основной — EN / RU'], a: bottom, o: 1.3}
+  - {p: [26, 27], k: Copy, l: ['0 · Основной — EN / RU'], a: bottom, o: 0.7}
+  - {p: [27, 28], k: Paste, l: ['0 · Основной — EN / RU'], a: bottom, o: 1.3}
+  - {p: [26, 28], k: Cut, l: ['0 · Основной — EN / RU'], a: bottom, o: 1.9}
+  - {p: [12, 23], k: CapsWord, l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [7, 19], k: '+', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [19, 31], k: '−', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [6, 18], k: '^', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [9, 21], k: '&', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [21, 33], k: '|', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [8, 20], k: '*', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [20, 32], k: '/', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [4, 16], k: '$', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [5, 17], k: '%', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [17, 29], k: '~', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [3, 15], k: '#', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [15, 27], k: '\', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [2, 14], k: '@', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [13, 25], k: '`', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [18, 30], k: '_', l: ['0 · Основной — EN / RU'], hidden: true}
+  - {p: [1, 13], k: '!', l: ['0 · Основной — EN / RU'], hidden: true}
