@@ -55,6 +55,7 @@
         COMBO(caps_word, &caps_word, <12 23>, <0>, COMBO_TERM_LONG)
         COMBO(plus_symbol, &kp KP_PLUS, <7 19>, <0>, COMBO_TERM_LONG)
         COMBO(minus_symbol, &kp KP_MINUS, <19 31>, <0>, COMBO_TERM_LONG)
+        COMBO(equal_sign, &kp KP_EQUAL, <15 16>, <0>, COMBO_TERM_LONG)
 
         COMBO(lpar, &kp LPAR, <7 8>, <0>, COMBO_TERM_LONG)
         COMBO(rpar, &kp RPAR, <8 9>, <0>, COMBO_TERM_LONG)
