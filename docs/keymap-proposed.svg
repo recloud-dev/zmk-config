@@ -543,20 +543,38 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
 <text x="0" y="0" class="key tap">Meh+F6</text>
 </g>
-<g transform="translate(850, 187)" class="key keypos-31">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(850, 187)" class="key changed keypos-31">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">Mute</text>
+<text x="0" y="27" class="key changed hold">C_MUTE</text>
 </g>
-<g transform="translate(918, 170)" class="key keypos-32">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(918, 170)" class="key changed keypos-32">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Громк.</tspan><tspan x="0" dy="1.2em">−</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_VOL_DN</tspan></text>
 </g>
-<g transform="translate(986, 187)" class="key keypos-33">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(986, 187)" class="key changed keypos-33">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Громк.</tspan><tspan x="0" dy="1.2em">+</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_VOL_UP</tspan></text>
 </g>
-<g transform="translate(1054, 212)" class="key keypos-34">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(1054, 212)" class="key changed keypos-34">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Яркость</tspan><tspan x="0" dy="1.2em">−</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_BRI_DN</tspan></text>
 </g>
-<g transform="translate(1122, 221)" class="key keypos-35">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(1122, 221)" class="key changed keypos-35">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Яркость</tspan><tspan x="0" dy="1.2em">+</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_BRI_UP</tspan></text>
 </g>
 <g transform="translate(215, 270) rotate(-12.0)" class="key trans keypos-36">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key trans"/>

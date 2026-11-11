@@ -451,7 +451,7 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 </g>
 <text x="1186.0" y="482.0" class="footer">Mriya · macOS ABC / Russian</text></svg>
 
-</div></section><section id="layer-1" class="layer" hidden><p class="note">Доступ: удерживать FN слева внизу либо Enter/FN. Фиолетовые клавиши — глобальные команды skhd → tmux после запуска config/host/install.sh. Выбирается последний использованный клиент tmux. FN+P отключён. Meh = Ctrl+Alt+Shift. В Codex выбор модели открывает пресеты: 0 — выбор модели; в Claude открывается меню модели. Одинаковые сочетания Meh слева и справа вызывают одно действие.</p><div class="diagram" role="img" aria-label="1 · FN — функции / агенты"><svg width="1216" height="527" viewBox="0 0 1216 527" class="keymap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+</div></section><section id="layer-1" class="layer" hidden><p class="note">Доступ: удерживать FN слева внизу либо Enter/FN. Фиолетовые клавиши — глобальные команды skhd → tmux после запуска config/host/install.sh. Выбирается последний использованный клиент tmux. FN+P отключён. Meh = Ctrl+Alt+Shift. В Codex выбор модели открывает пресеты: 0 — выбор модели; в Claude открывается меню модели. Одинаковые сочетания Meh слева и справа вызывают одно действие. Нижний ряд справа: M — Mute, ,/. — громкость −/+, / и ] — яркость дисплея −/+. Мультимедийные клавиши работают напрямую без skhd.</p><div class="diagram" role="img" aria-label="1 · FN — функции / агенты"><svg width="1216" height="527" viewBox="0 0 1216 527" class="keymap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <style>/* inherit to force styles through use tags */
 svg path {
     fill: inherit;
@@ -728,20 +728,38 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
 <text x="0" y="0" class="key tap">Meh+F6</text>
 </g>
-<g transform="translate(850, 187)" class="key keypos-31">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(850, 187)" class="key changed keypos-31">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">Mute</text>
+<text x="0" y="27" class="key changed hold">C_MUTE</text>
 </g>
-<g transform="translate(918, 170)" class="key keypos-32">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(918, 170)" class="key changed keypos-32">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Громк.</tspan><tspan x="0" dy="1.2em">−</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_VOL_DN</tspan></text>
 </g>
-<g transform="translate(986, 187)" class="key keypos-33">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(986, 187)" class="key changed keypos-33">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Громк.</tspan><tspan x="0" dy="1.2em">+</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_VOL_UP</tspan></text>
 </g>
-<g transform="translate(1054, 212)" class="key keypos-34">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(1054, 212)" class="key changed keypos-34">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Яркость</tspan><tspan x="0" dy="1.2em">−</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_BRI_DN</tspan></text>
 </g>
-<g transform="translate(1122, 221)" class="key keypos-35">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(1122, 221)" class="key changed keypos-35">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key changed"/>
+<text x="0" y="0" class="key changed tap">
+<tspan x="0" dy="-1.2em">Яркость</tspan><tspan x="0" dy="1.2em">+</tspan>
+</text>
+<text x="0" y="27" class="key changed hold"><tspan style="font-size: 88%">C_BRI_UP</tspan></text>
 </g>
 <g transform="translate(215, 270) rotate(-12.0)" class="key trans keypos-36">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key trans"/>
