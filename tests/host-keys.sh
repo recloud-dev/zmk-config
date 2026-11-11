@@ -9,6 +9,7 @@ work=$(mktemp -d)
 trap '"$real_tmux" -L "$task_socket" kill-server 2>/dev/null || true; rm -rf "$work"' EXIT HUP INT TERM
 mkdir -p "$work/bin" "$work/home/.tmux/scripts" "$work/home/.codex" "$work/home/.config/ghostty" "$work/home/.config/skhd"
 export HOME="$work/home" TEST_LOG="$work/log" TEST_COMMAND=codex TEST_BACK='%9'
+export TEST_FOCUS_SCRIPT="$work/focus.js"
 export TEST_CLIENTS='10|/dev/ttys001|session-one'
 export PATH="$work/bin:$PATH"
 
@@ -21,6 +22,7 @@ case "$1" in
     display-message)
         case "$last" in
             '#{client_pid}') printf '42\n' ;;
+            '#{client_tty}') printf '/dev/ttys001\n' ;;
             '#{pane_id}') printf '%%1\n' ;;
             '#{session_id}') [ "${TEST_TARGET_CLOSED:-0}" != 1 ] || exit 1; printf '$2\n' ;;
             '#{pane_current_command}') printf '%s\n' "$TEST_COMMAND" ;;
@@ -32,18 +34,93 @@ case "$1" in
     list-sessions) exit 1 ;;
 esac
 MOCK
+cat > "$work/bin/ps" <<'MOCK'
+#!/bin/sh
+case "$2" in
+    42) printf '41\n' ;;
+    41) printf '40\n' ;;
+    *) printf '1\n' ;;
+esac
+MOCK
+cat > "$work/bin/osascript" <<'MOCK'
+#!/bin/sh
+cat > "$TEST_FOCUS_SCRIPT"
+printf 'focus %s\n' "$*" >> "$TEST_LOG"
+exit "${TEST_FOCUS_FAIL:-0}"
+MOCK
 cat > "$HOME/.tmux/scripts/agent-jump.sh" <<'MOCK'
 #!/bin/sh
 printf '%s\n' 'work:1 %2'
 MOCK
 cp "$HOME/.tmux/scripts/agent-jump.sh" "$HOME/.tmux/scripts/agent-list.sh"
 cp "$HOME/.tmux/scripts/agent-jump.sh" "$HOME/.tmux/scripts/agent-monitor.sh"
-chmod +x "$work/bin/tmux" "$HOME/.tmux/scripts/"*.sh
+chmod +x "$work/bin/"* "$HOME/.tmux/scripts/"*.sh
 
 run() {
     : > "$TEST_LOG"
     "$root/config/host/agent-keys.sh" "$1"
 }
+
+run list
+grep -Fqx 'focus -l JavaScript - /dev/ttys001 42 41 40' "$TEST_LOG"
+awk '/^focus / { focused=1 } /^display-popup / { if (!focused) exit 1; opened=1 }
+     END { if (!opened) exit 1 }' "$TEST_LOG"
+export TEST_FOCUS_FAIL=1
+if run list; then printf 'Popup opened after terminal focus failed\n' >&2; exit 1; fi
+if grep -q '^display-popup' "$TEST_LOG"; then exit 1; fi
+unset TEST_FOCUS_FAIL
+run monitor
+grep -q '^focus ' "$TEST_LOG"
+grep -q '^new-window ' "$TEST_LOG"
+
+node - "$TEST_FOCUS_SCRIPT" <<'JS'
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const source = fs.readFileSync(process.argv[2], 'utf8');
+function check({tty = '/dev/ttys001', bundle = 'com.mitchellh.ghostty', matches = 1, accepted = true, owner = true} = {}) {
+    const events = [];
+    const surface = {tty: '/dev/ttys001'};
+    const app = {
+        isNil: () => false, activationPolicy: 0, bundleIdentifier: bundle,
+        activateWithOptions: () => { events.push('activate'); app.active = true; return accepted; },
+    };
+    const context = vm.createContext({
+        ObjC: {import: () => {}, unwrap: value => value},
+        $: {
+            NSApplicationActivationPolicyRegular: 0,
+            NSRunningApplication: {
+                runningApplicationWithProcessIdentifier: pid => owner && pid === 40 ? app : {isNil: () => true},
+            },
+        },
+        Application: id => {
+            assert.equal(id, 'com.mitchellh.ghostty');
+            return {
+                terminals: {whose: query => () => query.tty === surface.tty ? Array(matches).fill(surface) : []},
+                focus: target => { assert.equal(target, surface); events.push('surface'); },
+            };
+        },
+    });
+    vm.runInContext(source, context);
+    return {events, run: () => context.run([tty, '42', '41', '40'])};
+}
+let test = check();
+test.run();
+assert.deepEqual(test.events, ['surface', 'activate']);
+for (const options of [{tty: '/dev/other'}, {matches: 2}]) {
+    test = check(options);
+    assert.throws(test.run, /No unique Ghostty terminal/);
+    assert.deepEqual(test.events, []);
+}
+test = check({accepted: false});
+assert.throws(test.run, /activation refused/);
+test = check({owner: false});
+assert.throws(test.run, /No terminal application/);
+test = check({bundle: 'com.apple.Terminal'});
+test.run();
+assert.deepEqual(test.events, ['activate']);
+console.log('Terminal focus: exact Ghostty TTY, activation order, failures and app fallback passed.');
+JS
 
 run next
 grep -Fqx 'set-option -g @mriya_back_42 %1' "$TEST_LOG"
