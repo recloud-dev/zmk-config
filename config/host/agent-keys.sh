@@ -4,8 +4,24 @@ PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
 export PATH
 
 action=$1
-pane=$2
-client=$3
+clients=$(tmux list-clients -F '#{client_activity}|#{client_name}|#{session_id}')
+if [ $# -ge 2 ]; then
+    selected=$(printf '%s\n' "$clients" | awk -F'|' -v client="$2" '$2 == client')
+else
+    selected=$(printf '%s\n' "$clients" | sort -t'|' -k1,1nr | awk -F'|' '
+        NR == 1 { first=$0; activity=$1; next }
+        NR == 2 && $1 == activity { ambiguous=1 }
+        END { if (!ambiguous) print first }
+    ')
+fi
+if [ -z "$selected" ]; then
+    printf 'No unique tmux client. Specify: agent-keys.sh <action> <client-name>\n' >&2
+    exit 1
+fi
+IFS='|' read -r _activity client session <<EOF
+$selected
+EOF
+pane=$(tmux display-message -p -t "$session" '#{pane_id}')
 client_pid=$(tmux display-message -p -c "$client" '#{client_pid}')
 back_key="@mriya_back_$client_pid"
 
@@ -55,6 +71,7 @@ case "$action" in
         tmux new-window -t "$(tmux display-message -p -t "$pane" '#{session_id}'):" \
             -n agent-monitor "$HOME/.tmux/scripts/agent-monitor.sh"
         ;;
+    zoom) tmux resize-pane -t "$pane" -Z ;;
     model|less|more)
         command=$(tmux display-message -p -t "$pane" '#{pane_current_command}')
         case "$command:$action" in

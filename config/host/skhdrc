@@ -1,0 +1,8 @@
+ctrl + alt + shift - f1 : "$HOME/.config/mriya/agent-keys.sh" next
+ctrl + alt + shift - f2 : "$HOME/.config/mriya/agent-keys.sh" list
+ctrl + alt + shift - f3 : "$HOME/.config/mriya/agent-keys.sh" back
+ctrl + alt + shift - f4 : "$HOME/.config/mriya/agent-keys.sh" monitor
+ctrl + alt + shift - f5 : "$HOME/.config/mriya/agent-keys.sh" zoom
+ctrl + alt + shift - f6 : "$HOME/.config/mriya/agent-keys.sh" model
+ctrl + alt + shift - f8 : "$HOME/.config/mriya/agent-keys.sh" less
+ctrl + alt + shift - f9 : "$HOME/.config/mriya/agent-keys.sh" more
