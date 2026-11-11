@@ -451,7 +451,7 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 </g>
 <text x="1186.0" y="482.0" class="footer">Mriya · macOS ABC / Russian</text></svg>
 
-</div></section><section id="layer-1" class="layer" hidden><p class="note">Доступ: удерживать FN слева внизу либо Enter/FN. Фиолетовые клавиши — глобальные команды skhd → tmux после запуска config/host/install.sh. Выбирается последний использованный клиент tmux. FN+P отключён. Meh = Ctrl+Alt+Shift. В Codex выбор модели открывает пресеты: 0 — выбор модели; в Claude открывается меню модели. Одинаковые сочетания Meh слева и справа вызывают одно действие. Нижний ряд справа: M — Mute, ,/. — громкость −/+, / и ] — яркость дисплея −/+. Мультимедийные клавиши работают напрямую без skhd.</p><div class="diagram" role="img" aria-label="1 · FN — функции / агенты"><svg width="1216" height="527" viewBox="0 0 1216 527" class="keymap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+</div></section><section id="layer-1" class="layer" hidden><p class="note">Доступ: удерживать FN слева внизу либо Enter/FN. Фиолетовые клавиши — глобальные команды skhd → tmux после запуска config/host/install.sh. Выбирается последний использованный клиент tmux. FN+P отключён. Meh = Ctrl+Alt+Shift. В Codex выбор модели открывает пресеты: 0 — выбор модели; в Claude открывается меню модели. Одинаковые сочетания Meh слева и справа вызывают одно действие. Нижний ряд справа: M — Mute, ,/. — громкость −/+, / и ] — яркость дисплея −/+. Мультимедийные клавиши работают напрямую без skhd. FN+Y / FN+H переносят активное окно на предыдущий / следующий монитор через Rectangle: F17 / F18 без модификаторов.</p><div class="diagram" role="img" aria-label="1 · FN — функции / агенты"><svg width="1216" height="527" viewBox="0 0 1216 527" class="keymap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <style>/* inherit to force styles through use tags */
 svg path {
     fill: inherit;
@@ -615,8 +615,13 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
 <text x="0" y="0" class="key tap">F6</text>
 </g>
-<g transform="translate(782, 60)" class="key keypos-6">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(782, 60)" class="key host keypos-6">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
+<text x="0" y="0" class="key host tap">
+<tspan x="0" dy="-0.6em">Окно</tspan><tspan x="0" dy="1.2em">←</tspan>
+</text>
+<text x="0" y="27" class="key host hold">F17</text>
+<text x="0" y="-27" class="key host shifted">экран</text>
 </g>
 <g transform="translate(850, 51)" class="key host keypos-7">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
@@ -664,8 +669,13 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
 <text x="0" y="0" class="key tap">F12</text>
 </g>
-<g transform="translate(782, 128)" class="key keypos-18">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(782, 128)" class="key host keypos-18">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
+<text x="0" y="0" class="key host tap">
+<tspan x="0" dy="-0.6em">Окно</tspan><tspan x="0" dy="1.2em">→</tspan>
+</text>
+<text x="0" y="27" class="key host hold">F18</text>
+<text x="0" y="-27" class="key host shifted">экран</text>
 </g>
 <g transform="translate(850, 119)" class="key host keypos-19">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>

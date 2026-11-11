@@ -430,8 +430,13 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
 <text x="0" y="0" class="key tap">F6</text>
 </g>
-<g transform="translate(782, 60)" class="key keypos-6">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(782, 60)" class="key host keypos-6">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
+<text x="0" y="0" class="key host tap">
+<tspan x="0" dy="-0.6em">Окно</tspan><tspan x="0" dy="1.2em">←</tspan>
+</text>
+<text x="0" y="27" class="key host hold">F17</text>
+<text x="0" y="-27" class="key host shifted">экран</text>
 </g>
 <g transform="translate(850, 51)" class="key host keypos-7">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
@@ -479,8 +484,13 @@ rect.combo { fill: #fff0cf; stroke: #bda36a; }
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
 <text x="0" y="0" class="key tap">F12</text>
 </g>
-<g transform="translate(782, 128)" class="key keypos-18">
-<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key"/>
+<g transform="translate(782, 128)" class="key host keypos-18">
+<rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
+<text x="0" y="0" class="key host tap">
+<tspan x="0" dy="-0.6em">Окно</tspan><tspan x="0" dy="1.2em">→</tspan>
+</text>
+<text x="0" y="27" class="key host hold">F18</text>
+<text x="0" y="-27" class="key host shifted">экран</text>
 </g>
 <g transform="translate(850, 119)" class="key host keypos-19">
 <rect rx="6" ry="6" x="-32" y="-32" width="64" height="64" class="key host"/>
